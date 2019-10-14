@@ -1,5 +1,6 @@
-/.idea/
-/templates/
-/db.sqlite3
-/__pycache__/
+.idea/
+templates/
+uploads/
+**/__pycache__
+db.sqlite3
 *.pyc
