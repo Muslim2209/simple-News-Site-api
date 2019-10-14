@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+Django = "*"
+djangorestframework = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+social-auth-app-django = "*"
+Pillow = "*"
+celery = "*"
+django-celery-beat = "*"
+
+[requires]
+python_version = "3.7"
+
+[packages.django-newsletter]
+git = "git://github.com/dokterbob/django-newsletter.git"
+editable = true
