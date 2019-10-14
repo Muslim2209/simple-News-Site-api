@@ -6,9 +6,9 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from news.models import News, NewsTag, NewsCategory
+from news.models import News, NewsTag, NewsCategory, Comment
 from news.permissions import IsAdminOrReadOnly
-from news.serializers import NewsSerializer, NewsCategorySerializer, NewsTagSerializer
+from news.serializers import NewsSerializer, NewsCategorySerializer, NewsTagSerializer, CommentSerializer
 
 
 class UserActivationView(APIView):
@@ -63,3 +63,8 @@ class NewsCategoryViewSet(viewsets.ModelViewSet):
     queryset = NewsCategory.objects.all()
     serializer_class = NewsCategorySerializer
     permission_classes = [IsAdminOrReadOnly]
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

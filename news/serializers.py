@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 
-from news.models import News, NewsCategory, NewsTag, CustomUser
+from news.models import News, NewsCategory, NewsTag, Comment
 
 
 class CustomUserSerializer(UserCreateSerializer):
@@ -22,24 +22,33 @@ class NewsCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class NewsSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    category = NewsCategorySerializer(many=False)
-    tag = NewsTagSerializer()
+    comment = CommentSerializer()
+
+    # tag = NewsTagSerializer(many=True)
 
     class Meta:
         model = News
         fields = '__all__'  # ['id', 'title', 'body', 'author']
 
     def create(self, validated_data):
-        category_data = validated_data.pop('category')
-        category = NewsCategory(**category_data)
-        if category is not None:
-            category.save()
-        tag_data = validated_data.pop('tag')
-        tag = NewsTag(**tag_data)
-        if tag is not None:
-            tag.save()
-        news = News(category=category, tag=tag, **validated_data)
+        # tag_data = validated_data.pop('tag')
+        # for tags tag_data:
+        #     tag = NewsTag(**tags)
+        #     tag.save()
+        comment_data = validated_data.pop('comment')
+        news = News(**validated_data)
         news.save()
+        for comments in comment_data:
+            comment = Comment(news=news, **comments)
+            comment.save()
         return news

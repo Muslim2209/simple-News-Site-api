@@ -23,12 +23,15 @@ class NewsTag(models.Model):
 class News(models.Model):
     title = models.CharField(max_length=225)
     body = models.TextField()
-    image = models.ImageField(upload_to='uploads/', null=True, blank=True)
+    image = models.ImageField(upload_to='uploads/images/', null=True, blank=True)
+    attachment = models.FileField(upload_to='uploads/files/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='News author+')
     category = models.ManyToManyField('NewsCategory')
     tag = models.ManyToManyField('NewsTag', blank=True)
+
+    # comment = models.ManyToManyField('Comment')
 
     class Meta:
         verbose_name_plural = 'News'
@@ -49,3 +52,14 @@ class CustomUser(AbstractUser):
             return self.username
 
     REQUIRED_FIELDS = ['email', 'is_subscribed', 'date_of_birth']
+
+
+class Comment(models.Model):
+    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Comment author+',
+                               null=True)
+    news = models.ForeignKey('News', related_name='comments', on_delete=models.CASCADE)
+    text = models.TextField()
+
+    def __str__(self):
+        return self.text[:100]

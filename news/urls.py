@@ -5,8 +5,9 @@ from news import views
 
 router = routers.DefaultRouter()
 router.register(r'news', views.NewsViewSet)
-router.register(r'tag', views.NewsTagViewSet)
-router.register(r'category', views.NewsCategoryViewSet)
+router.register(r'tags', views.NewsTagViewSet)
+router.register(r'categories', views.NewsCategoryViewSet)
+router.register(r'comments', views.CommentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
