@@ -1,10 +1,12 @@
 import os
+import project_vars
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '+ryah%_%ax^itwk2pk^58*1=phno4_@slox9qwv2(debjia^6f'
-myead = "drf-no-reply@mail.ru"
-myep = 'simpleisbetter'
+SECRET_KEY = project_vars.SECRET_KEY
+
+myead = project_vars.myead
+myep = project_vars.myep
 
 DEBUG = True
 

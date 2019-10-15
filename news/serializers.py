@@ -24,6 +24,7 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
+    news = serializers.ReadOnlyField(source='news.id')
 
     class Meta:
         model = Comment

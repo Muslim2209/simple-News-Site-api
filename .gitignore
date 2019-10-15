@@ -4,3 +4,4 @@ uploads/
 **/__pycache__
 db.sqlite3
 *.pyc
+project_vars.py
