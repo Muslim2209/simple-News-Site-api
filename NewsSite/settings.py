@@ -107,7 +107,7 @@ DJOSER = {
     'UNSUBSCRIPTION_URL': 'auth/users/unsubscribe/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'LOGOUT_ON_PASSWORD_CHANGE': True,
-    'HIDE_USERS': False,
+    # 'HIDE_USERS': False,
     'SERIALIZERS': {
         'user_create': 'news.serializers.CustomUserSerializer',
     },

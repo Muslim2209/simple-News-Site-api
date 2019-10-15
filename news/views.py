@@ -2,13 +2,16 @@ import requests
 from djoser.views import UserViewSet
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from news.models import News, NewsTag, NewsCategory, Comment
 from news.permissions import IsAdminOrReadOnly
-from news.serializers import NewsSerializer, NewsCategorySerializer, NewsTagSerializer, CommentSerializer
+from news.serializers import (
+    NewsSerializer, NewsCategorySerializer,
+    NewsTagSerializer, CommentSerializer,
+    CommentCreateSerializer)
 
 
 class UserActivationView(APIView):
@@ -52,6 +55,9 @@ class NewsViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    # def get_queryset(self):
+    #     if action()
+
 
 class NewsTagViewSet(viewsets.ModelViewSet):
     queryset = NewsTag.objects.all()
@@ -67,4 +73,19 @@ class NewsCategoryViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action in ['create']:
+            permission_classes = [
+                IsAuthenticated
+            ]
+        return [permission() for permission in permission_classes]
+
+    def get_serializer_class(self):
+        serializer_class = CommentSerializer
+        if self.action in ['list','retrieve']:
+            serializer_class = CommentSerializer
+        elif self.action in ['create','update','partial_update']:
+            serializer_class = CommentCreateSerializer
+        return serializer_class

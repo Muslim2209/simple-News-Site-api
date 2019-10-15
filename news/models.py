@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from news.managers import NewsUserManager
 
 
 class NewsCategory(models.Model):
@@ -30,8 +33,7 @@ class News(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='News author+')
     category = models.ManyToManyField('NewsCategory')
     tag = models.ManyToManyField('NewsTag', blank=True)
-
-    # comment = models.ManyToManyField('Comment')
+    is_active = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'News'
@@ -45,23 +47,28 @@ class CustomUser(AbstractUser):
     is_subscribed = models.BooleanField(default=True)
     date_of_birth = models.DateField(null=True)
 
+    email = models.EmailField(_('email address'), unique=True)
+
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'date_of_birth', 'is_subscribed']
+    USERNAME_FIELD = 'email'
+
     def __str__(self):
         if self.first_name or self.last_name:
             return '{} {}'.format(self.first_name, self.last_name)
         else:
             return self.username
 
-    REQUIRED_FIELDS = ['email', 'is_subscribed', 'date_of_birth']
+    objects = NewsUserManager()
 
 
 class Comment(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Comment author+',
-                               null=True)
+                               null=True, blank=True)
     news = models.ForeignKey('News', related_name='comments', on_delete=models.CASCADE, null=True, blank=True)
-    text = models.TextField(null=True, blank=True)
+    text = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.text[:100]
+    #
+    # def __str__(self):
+    #     return self.text[:100]

@@ -23,33 +23,34 @@ class NewsCategorySerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    news = serializers.ReadOnlyField(source='news.id')
+    author = serializers.ReadOnlyField(source='author.email')
 
     class Meta:
         model = Comment
         fields = '__all__'
 
 
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        exclude = ['author']
+
+    def create(self, validated_data):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+
+        comment = Comment.objects.create(author=user, **validated_data)
+        return comment
+
+
 class NewsSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    comment = CommentSerializer()
+    author = serializers.ReadOnlyField(source='author.email')
+    comments = CommentSerializer(read_only=True, many=True)
 
     # tag = NewsTagSerializer(many=True)
 
     class Meta:
         model = News
         fields = '__all__'  # ['id', 'title', 'body', 'author']
-
-    def create(self, validated_data):
-        # tag_data = validated_data.pop('tag')
-        # for tags tag_data:
-        #     tag = NewsTag(**tags)
-        #     tag.save()
-        comment_data = validated_data.pop('comment')
-        news = News(**validated_data)
-        news.save()
-        for comments in comment_data:
-            comment = Comment(news=news, **comments)
-            comment.save()
-        return news
