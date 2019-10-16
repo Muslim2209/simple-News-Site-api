@@ -1,8 +1,9 @@
 import requests
+from django.utils import timezone
 from djoser.views import UserViewSet
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -48,15 +49,17 @@ class CustomUserViewsSet(UserViewSet):
 
 
 class NewsViewSet(viewsets.ModelViewSet):
-    queryset = News.objects.all()
     serializer_class = NewsSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    # def get_queryset(self):
-    #     if action()
+    def get_queryset(self):
+        queryset = News.objects.filter(is_active=True)
+        if self.action == 'list':
+            queryset = News.objects.filter(is_active=True, publish_time__lte=timezone.now())
+        return queryset
 
 
 class NewsTagViewSet(viewsets.ModelViewSet):
@@ -84,8 +87,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         serializer_class = CommentSerializer
-        if self.action in ['list','retrieve']:
+        if self.action in ['list', 'retrieve']:
             serializer_class = CommentSerializer
-        elif self.action in ['create','update','partial_update']:
+        elif self.action in ['create', 'update', 'partial_update']:
             serializer_class = CommentCreateSerializer
         return serializer_class

@@ -40,17 +40,28 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if request and hasattr(request, "user"):
             user = request.user
-
         comment = Comment.objects.create(author=user, **validated_data)
         return comment
 
 
 class NewsSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.email')
-    comments = CommentSerializer(read_only=True, many=True)
 
-    # tag = NewsTagSerializer(many=True)
+    # tag = NewsTagSerializer(many=True, required=False)
 
     class Meta:
         model = News
-        fields = '__all__'  # ['id', 'title', 'body', 'author']
+        fields = '__all__'
+        # ['id', 'title', 'body', 'image', 'attachment', "created_at", "updated_at", "is_active", 'author',
+        #       'comments', "category", "tag"]
+
+    def create(self, validated_data):
+        for i in validated_data:
+            print(i)
+            category = validated_data.pop('category')
+            tags = validated_data.pop('tag')
+            NewsTag.objects.get_or_create(name=tags[0])
+            news = News.objects.create(**validated_data)
+            news.tag = tags
+            news.category = category
+            return news

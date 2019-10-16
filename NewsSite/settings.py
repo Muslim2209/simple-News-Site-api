@@ -26,9 +26,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'django_celery_beat',
-    # 'sorl.thumbnail',
-    # 'newsletter',
+    'drf_yasg',
+    # 'django_celery_beat',
 ]
 
 # SITE_ID = 1
@@ -93,7 +92,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 50
 }
 
 SIMPLE_JWT = {
