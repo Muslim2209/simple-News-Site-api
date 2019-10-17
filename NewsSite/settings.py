@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     # 'django.contrib.sites',
 
     'news',
+    'users',
+    'admin_page',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -108,7 +110,7 @@ DJOSER = {
     'LOGOUT_ON_PASSWORD_CHANGE': True,
     # 'HIDE_USERS': False,
     'SERIALIZERS': {
-        'user_create': 'news.serializers.CustomUserSerializer',
+        'user_create': 'users.serializers.CustomUserSerializer',
     },
 }
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -132,7 +134,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'news.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # For RabbitMQ
 BROKER_URL = 'amqp://localhost'

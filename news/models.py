@@ -2,10 +2,6 @@ from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import User, AbstractUser, PermissionsMixin
 from django.db import models
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-
-from news.managers import NewsUserManager
 
 
 class NewsCategory(models.Model):
@@ -33,10 +29,10 @@ class News(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey('NewsCategory', on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey('NewsCategory', on_delete=models.CASCADE, blank=False)
     tag = models.ManyToManyField('NewsTag', blank=True)
     is_active = models.BooleanField(default=False)
-    publish_time = models.DateTimeField(default=timezone.now())
+    publish_time = models.DateTimeField()
 
     class Meta:
         verbose_name_plural = 'News'
@@ -44,29 +40,6 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    date_of_birth = models.DateField(blank=True, null=True)
-    is_subscribed = models.BooleanField(default=True)
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-    )
-
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'date_of_birth']
-    USERNAME_FIELD = 'email'
-
-    def __str__(self):
-        if self.first_name or self.last_name:
-            return '{} {}'.format(self.first_name, self.last_name)
-        else:
-            return self.email
-
-    objects = NewsUserManager()
 
 
 class Comment(models.Model):
