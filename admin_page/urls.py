@@ -4,8 +4,8 @@ from rest_framework import routers
 from admin_page import views
 
 router = routers.DefaultRouter()
-router.register(r'groups', views.GroupViewSet, base_name='Groups')
-router.register(r'permissions', views.PermissionViewSet, base_name='Permissions')
+router.register(r'groups', views.GroupViewSet)
+router.register(r'permissions', views.PermissionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

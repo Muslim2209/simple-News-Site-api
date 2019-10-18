@@ -14,7 +14,6 @@ social-auth-app-django = "*"
 Pillow = "*"
 celery = "*"
 django-celery-beat = "*"
-drf-yasg = "*"
 
 [requires]
 python_version = "3.7"

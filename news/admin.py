@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from news.models import News, NewsCategory, NewsTag, Comment
 
 admin.site.register(NewsTag)

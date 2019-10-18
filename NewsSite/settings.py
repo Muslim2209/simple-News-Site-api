@@ -22,14 +22,14 @@ INSTALLED_APPS = [
     # 'django.contrib.sites',
 
     'news',
-    'users',
     'admin_page',
+    'users',
 
     'rest_framework',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
     'djoser',
-    'drf_yasg',
     # 'django_celery_beat',
+    # 'newsletter',
 ]
 
 # SITE_ID = 1
@@ -94,7 +94,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
+    'PAGE_SIZE': 100
 }
 
 SIMPLE_JWT = {
@@ -107,10 +107,11 @@ DJOSER = {
     'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
     'UNSUBSCRIPTION_URL': 'auth/users/unsubscribe/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'LOGOUT_ON_PASSWORD_CHANGE': True,
     # 'HIDE_USERS': False,
     'SERIALIZERS': {
-        'user_create': 'users.serializers.CustomUserSerializer',
+        'user_create': 'users.serializers.CustomUserCreateSerializer',
+        'user': 'users.serializers.CustomUserSerializer',
+        'current_user': 'users.serializers.CustomUserSerializer',
     },
 }
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
