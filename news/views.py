@@ -1,41 +1,41 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-
+from rest_framework import viewsets, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, DjangoModelPermissions
 from news.models import News, NewsTag, NewsCategory, Comment
-from news.permissions import IsAdminOrReadOnly
+from news.permissions import IsAdminOrReadOnly, CustomDjangoModelPermissions
 from news.serializers import (
     NewsSerializer, NewsCategorySerializer,
     NewsTagSerializer, CommentSerializer,
     CommentCreateSerializer)
 
 
-class NewsViewSet(viewsets.ModelViewSet):
+class NewsListCreateAPIView(generics.ListCreateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [DjangoModelPermissions]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    # def get_permissions(self):
-    #     permission_classes = []
-    #     if self.action in ['create']:
-    #         permission_classes = [
-    #             IsAuthenticated
-    #         ]
-    #     return [permission() for permission in permission_classes]
+
+class NewsListRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+    permission_classes = [DjangoModelPermissions]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class NewsTagViewSet(viewsets.ModelViewSet):
     queryset = NewsTag.objects.all()
     serializer_class = NewsTagSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [DjangoModelPermissions]
 
 
 class NewsCategoryViewSet(viewsets.ModelViewSet):
     queryset = NewsCategory.objects.all()
     serializer_class = NewsCategorySerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [DjangoModelPermissions]
 
 
 class CommentViewSet(viewsets.ModelViewSet):

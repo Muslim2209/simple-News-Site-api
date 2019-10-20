@@ -40,7 +40,6 @@ class News(models.Model):
         return self.title
 
 
-
 class Comment(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Comment author+',
@@ -49,6 +48,6 @@ class Comment(models.Model):
     text = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    #
-    # def __str__(self):
-    #     return self.text[:100]
+
+    def __str__(self):
+        return self.text[:20]
