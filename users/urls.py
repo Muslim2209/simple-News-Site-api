@@ -11,7 +11,4 @@ urlpatterns = [
     # path('', include(router.urls)),
     url(r'^auth/users/activation/(?P<uid>[\w-]+)/(?P<token>[\w-]+)/$', views.UserActivationView.as_view()),
     url(r'^auth/users/unsubscribe/(?P<uid>[\w-]+)/(?P<token>[\w-]+)/$', views.UnsubscribeView.as_view()),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
-    path('auth/', include('djoser.urls.jwt')),
 ]

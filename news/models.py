@@ -28,9 +28,10 @@ class News(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='News author+')
-    category = models.ManyToManyField('NewsCategory')
+    category = models.ForeignKey('NewsCategory', on_delete=models.CASCADE, null=True)
     tag = models.ManyToManyField('NewsTag', blank=True)
     is_active = models.BooleanField(default=False)
+    subscribers = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     class Meta:
         verbose_name_plural = 'News'
@@ -51,3 +52,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[:20]
+
+# class Subscription(models.Model):
+#     news = models.ManyToManyField('News')
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     is_active = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         # new = News.objects.get(subscription__news__title=)
+#         return '{} -- {}'.format(self.news, self.user.email)

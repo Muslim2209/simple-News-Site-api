@@ -26,8 +26,9 @@ INSTALLED_APPS = [
     'users',
 
     'rest_framework',
-    # 'rest_framework.authtoken',
     'djoser',
+    'rest_framework.authtoken',
+
     # 'django_celery_beat',
     # 'newsletter',
 ]
@@ -138,11 +139,11 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # For RabbitMQ
-BROKER_URL = 'amqp://localhost'
-CELERY_RESULT_BACKEND = 'amqp://localhost'
+# BROKER_URL = 'amqp://localhost'
+# CELERY_RESULT_BACKEND = 'amqp://localhost'
 
 # Celery Data Format
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = TIME_ZONE
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = TIME_ZONE

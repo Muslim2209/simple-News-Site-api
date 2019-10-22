@@ -18,6 +18,11 @@
 
 {% block html_body %}
 
+    {% for new in {{ news }} %}
+
+        {{ new }}
+
+    {% endfor %}
     <p>{% trans "Please go to the following page to unsubscribe from newsletter:" %}</p>
 
     <p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}">{{ protocol }}://{{ domain }}/{{ url|safe }}</a></p>
