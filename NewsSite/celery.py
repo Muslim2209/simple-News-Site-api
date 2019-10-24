@@ -1,6 +1,6 @@
 import os
 from celery import Celery
-from NewsSite import settings
+from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NewsSite.settings')
 app = Celery('NewsSite')

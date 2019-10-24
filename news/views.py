@@ -1,6 +1,6 @@
-from djoser.views import UserViewSet
+from django.utils import timezone
 from rest_framework import status
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
@@ -29,9 +29,14 @@ from news.serializers import (
 
 
 class NewsViewSet(viewsets.ModelViewSet):
-    queryset = News.objects.all()
     serializer_class = NewsSerializer
     permission_classes = [DjangoModelPermissions]
+
+    def get_queryset(self):
+        queryset = News.objects.filter(is_active=True)
+        if self.action == 'list':
+            queryset = News.objects.filter(is_active=True, publish_time__lte=timezone.now())
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

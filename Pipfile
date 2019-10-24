@@ -10,16 +10,11 @@ Django = "*"
 djangorestframework = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
-social-auth-app-django = "*"
 Pillow = "*"
+amqp = "*"
+django = "*"
 celery = "*"
-django-celery-beat = "*"
-amqp = "==2.5.2"
-ldif3 = "==3.2.2"
+requests = "*"
 
 [requires]
 python_version = "3.7"
-
-[packages.django-newsletter]
-git = "git://github.com/dokterbob/django-newsletter.git"
-editable = true

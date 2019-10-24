@@ -7,10 +7,8 @@ router = routers.DefaultRouter()
 router.register(r'tags', views.NewsTagViewSet)
 router.register(r'categories', views.NewsCategoryViewSet)
 router.register(r'comments', views.CommentViewSet)
-router.register(r'news', views.NewsViewSet)
+router.register(r'news', views.NewsViewSet, base_name='News')
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('news/', views.NewsListCreateAPIView.as_view()),
-    # path('news/<int:pk>/', views.NewsListRetrieveUpdateDestroyAPIView.as_view()),
 ]

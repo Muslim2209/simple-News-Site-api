@@ -5,3 +5,8 @@ db.sqlite3
 *.pyc
 project_vars.py
 __pycache__/
+Pipfile.lock
+.env.dev
+.env.prod
+.env.prod.db
+staticfiles
