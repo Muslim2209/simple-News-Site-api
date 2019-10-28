@@ -12,9 +12,11 @@ djoser = "*"
 djangorestframework-simplejwt = "*"
 Pillow = "*"
 amqp = "*"
-django = "*"
-celery = "*"
 requests = "*"
+setuptools = "*"
+SQLAlchemy = "*"
+celery = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"

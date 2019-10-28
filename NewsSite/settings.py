@@ -1,16 +1,20 @@
 import os
+from celery.schedules import crontab
 import project_vars
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = "SECRET_KEY"
 
 myead = project_vars.myead
 myep = project_vars.myep
 
 DEBUG = int(os.environ.get("DEBUG", default=0))
+# DEBUG = 1
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+# ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -116,6 +120,7 @@ DJOSER = {
         'current_user': 'users.serializers.CustomUserSerializer',
     },
 }
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 2525
@@ -135,17 +140,29 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = "/staticfiles/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# For RabbitMQ
-# BROKER_URL = 'amqp://localhost'
-# CELERY_RESULT_BACKEND = 'amqp://localhost'
+# CELERY_BROKER_URL = 'redis://localhost:6379'
 
-# Celery Data Format
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'amqp://localhost'
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BEAT_SCHEDULE = {
+    'newsletter': {
+        'task': 'news.tasks.send_weekly_news',
+        'schedule': crontab(),
+    },
+    'task-number-two': {
+        'task': 'news.tasks.send_notification',
+        'schedule': crontab(hour=17, day_of_week=5),
+        # 'args': (*args)
+    }
+}

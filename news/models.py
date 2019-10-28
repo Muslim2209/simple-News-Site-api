@@ -31,7 +31,7 @@ class News(models.Model):
     category = models.ForeignKey('NewsCategory', on_delete=models.CASCADE, null=True)
     tag = models.ManyToManyField('NewsTag', blank=True)
     is_active = models.BooleanField(default=False)
-    subscribers = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    subscribers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
     publish_time = models.DateTimeField()
 
     class Meta:
