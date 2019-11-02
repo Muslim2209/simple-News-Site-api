@@ -158,11 +158,6 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULE = {
     'newsletter': {
         'task': 'news.tasks.send_weekly_news',
-        'schedule': crontab(),
-    },
-    'task-number-two': {
-        'task': 'news.tasks.send_notification',
         'schedule': crontab(hour=17, day_of_week=5),
-        # 'args': (*args)
-    }
+    },
 }
