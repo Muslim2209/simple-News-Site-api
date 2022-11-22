@@ -14,7 +14,7 @@ importlib-metadata==0.23
 kombu==4.6.5
 more-itertools==7.2.0
 packaging==19.2
-Pillow==6.2.1
+Pillow==9.3.0
 psycopg2-binary==2.8.3
 PyJWT==1.7.1
 pytz==2019.3
